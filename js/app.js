@@ -4,117 +4,119 @@
 
 const BIZFLOW_STORAGE_KEY = 'bizflow_ai_tasks_v2';
 
-// Default Initial Seed Data if LocalStorage is empty
-const DEFAULT_SAMPLE_TASKS = [
-  {
-    id: 'task-101',
-    title: 'Reconcile Acme Corp Q3 Invoice & Payment',
-    description: 'Verify bank deposit of $4,500 from Acme Corp and send updated tax receipt before end of day.',
-    column: 'todo', // 'todo', 'in_progress', 'done'
-    priority: 'high', // 'high', 'medium', 'low'
-    category: 'Finance',
-    deadline: getRelativeDateStr(0), // Today
-    assignee: 'Sarah M.',
-    subtasks: [
-      { text: 'Check bank statement', completed: true },
-      { text: 'Send tax invoice PDF', completed: false }
-    ],
-    estimatedHours: 2,
-    aiExtracted: true,
-    createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
-  },
-  {
-    id: 'task-102',
-    title: 'Dispatch Emergency Warehouse Order #884',
-    description: 'Package and ship 50 units of industrial sensors to TechCorp Atlanta branch via priority freight.',
-    column: 'in_progress',
-    priority: 'high',
-    category: 'Operations',
-    deadline: getRelativeDateStr(1), // Tomorrow
-    assignee: 'Marcus Vance',
-    subtasks: [
-      { text: 'Print shipping labels', completed: true },
-      { text: 'Inspect packaging seal', completed: true },
-      { text: 'Notify courier dispatch', completed: false }
-    ],
-    estimatedHours: 4,
-    aiExtracted: false,
-    createdAt: new Date(Date.now() - 86400000).toISOString()
-  },
-  {
-    id: 'task-103',
-    title: 'Finalize Q4 Product Roadmap & Client Deck',
-    description: 'Integrate new AI Workflow features into slide presentation for Friday executive review.',
-    column: 'in_progress',
-    priority: 'medium',
-    category: 'Marketing',
-    deadline: getRelativeDateStr(3),
-    assignee: 'Elena Rostova',
-    subtasks: [
-      { text: 'Draft feature matrix', completed: true },
-      { text: 'Add ROI chart graphic', completed: false }
-    ],
-    estimatedHours: 6,
-    aiExtracted: true,
-    createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
-  },
-  {
-    id: 'task-104',
-    title: 'Audit Customer Support SLAs & Response Rate',
-    description: 'Review ticket resolution times from last week and publish resolution metrics on dashboard.',
-    column: 'done',
-    priority: 'low',
-    category: 'Support',
-    deadline: getRelativeDateStr(-1), // Yesterday
-    assignee: 'David K.',
-    subtasks: [
-      { text: 'Export Zendesk CSV log', completed: true },
-      { text: 'Calculate average resolution time', completed: true }
-    ],
-    estimatedHours: 3,
-    aiExtracted: false,
-    createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
-  },
-  {
-    id: 'task-105',
-    title: 'Schedule Onboarding Sync with New Enterprise Lead',
-    description: 'Set up 30-min discovery call with VP of Operations at Nexus Global.',
-    column: 'todo',
-    priority: 'medium',
-    category: 'Sales',
-    deadline: getRelativeDateStr(2),
-    assignee: 'Sarah M.',
-    subtasks: [
-      { text: 'Send Calendly link', completed: false }
-    ],
-    estimatedHours: 1,
-    aiExtracted: true,
-    createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
-  },
-  {
-    id: 'task-106',
-    title: 'Setup Automated Database Backups & Security Check',
-    description: 'Configure automated S3 daily backups and update SSL certificates on core servers.',
-    column: 'done',
-    priority: 'high',
-    category: 'Operations',
-    deadline: getRelativeDateStr(-2),
-    assignee: 'Marcus Vance',
-    subtasks: [
-      { text: 'Test backup restoration script', completed: true },
-      { text: 'Renew TLS cert', completed: true }
-    ],
-    estimatedHours: 5,
-    aiExtracted: false,
-    createdAt: new Date(Date.now() - 86400000 * 7).toISOString()
-  }
-];
-
 // Helper to generate ISO date strings offset by days
 function getRelativeDateStr(daysOffset) {
   const d = new Date();
   d.setDate(d.getDate() + daysOffset);
   return d.toISOString().split('T')[0];
+}
+
+// Default Initial Seed Data if LocalStorage is empty
+function getDefaultSampleTasks() {
+  return [
+    {
+      id: 'task-101',
+      title: 'Reconcile Acme Corp Q3 Invoice & Payment',
+      description: 'Verify bank deposit of $4,500 from Acme Corp and send updated tax receipt before end of day.',
+      column: 'todo', // 'todo', 'in_progress', 'done'
+      priority: 'high', // 'high', 'medium', 'low'
+      category: 'Finance',
+      deadline: getRelativeDateStr(0), // Today
+      assignee: 'Sarah M.',
+      subtasks: [
+        { text: 'Check bank statement', completed: true },
+        { text: 'Send tax invoice PDF', completed: false }
+      ],
+      estimatedHours: 2,
+      aiExtracted: true,
+      createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+    },
+    {
+      id: 'task-102',
+      title: 'Dispatch Emergency Warehouse Order #884',
+      description: 'Package and ship 50 units of industrial sensors to TechCorp Atlanta branch via priority freight.',
+      column: 'in_progress',
+      priority: 'high',
+      category: 'Operations',
+      deadline: getRelativeDateStr(1), // Tomorrow
+      assignee: 'Marcus Vance',
+      subtasks: [
+        { text: 'Print shipping labels', completed: true },
+        { text: 'Inspect packaging seal', completed: true },
+        { text: 'Notify courier dispatch', completed: false }
+      ],
+      estimatedHours: 4,
+      aiExtracted: false,
+      createdAt: new Date(Date.now() - 86400000).toISOString()
+    },
+    {
+      id: 'task-103',
+      title: 'Finalize Q4 Product Roadmap & Client Deck',
+      description: 'Integrate new AI Workflow features into slide presentation for Friday executive review.',
+      column: 'in_progress',
+      priority: 'medium',
+      category: 'Marketing',
+      deadline: getRelativeDateStr(3),
+      assignee: 'Elena Rostova',
+      subtasks: [
+        { text: 'Draft feature matrix', completed: true },
+        { text: 'Add ROI chart graphic', completed: false }
+      ],
+      estimatedHours: 6,
+      aiExtracted: true,
+      createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
+    },
+    {
+      id: 'task-104',
+      title: 'Audit Customer Support SLAs & Response Rate',
+      description: 'Review ticket resolution times from last week and publish resolution metrics on dashboard.',
+      column: 'done',
+      priority: 'low',
+      category: 'Support',
+      deadline: getRelativeDateStr(-1), // Yesterday
+      assignee: 'David K.',
+      subtasks: [
+        { text: 'Export Zendesk CSV log', completed: true },
+        { text: 'Calculate average resolution time', completed: true }
+      ],
+      estimatedHours: 3,
+      aiExtracted: false,
+      createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
+    },
+    {
+      id: 'task-105',
+      title: 'Schedule Onboarding Sync with New Enterprise Lead',
+      description: 'Set up 30-min discovery call with VP of Operations at Nexus Global.',
+      column: 'todo',
+      priority: 'medium',
+      category: 'Sales',
+      deadline: getRelativeDateStr(2),
+      assignee: 'Sarah M.',
+      subtasks: [
+        { text: 'Send Calendly link', completed: false }
+      ],
+      estimatedHours: 1,
+      aiExtracted: true,
+      createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
+    },
+    {
+      id: 'task-106',
+      title: 'Setup Automated Database Backups & Security Check',
+      description: 'Configure automated S3 daily backups and update SSL certificates on core servers.',
+      column: 'done',
+      priority: 'high',
+      category: 'Operations',
+      deadline: getRelativeDateStr(-2),
+      assignee: 'Marcus Vance',
+      subtasks: [
+        { text: 'Test backup restoration script', completed: true },
+        { text: 'Renew TLS cert', completed: true }
+      ],
+      estimatedHours: 5,
+      aiExtracted: false,
+      createdAt: new Date(Date.now() - 86400000 * 7).toISOString()
+    }
+  ];
 }
 
 class BizFlowStore {
@@ -134,16 +136,16 @@ class BizFlowStore {
         if (Array.isArray(parsed) && parsed.length > 0) {
           this.tasks = parsed;
         } else {
-          this.tasks = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_TASKS));
+          this.tasks = getDefaultSampleTasks();
           this.saveStore();
         }
       } catch (e) {
         console.error('Failed to parse localStorage data, loading default seed.', e);
-        this.tasks = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_TASKS));
+        this.tasks = getDefaultSampleTasks();
         this.saveStore();
       }
     } else {
-      this.tasks = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_TASKS));
+      this.tasks = getDefaultSampleTasks();
       this.saveStore();
     }
   }
@@ -154,7 +156,7 @@ class BizFlowStore {
   }
 
   resetToDefault() {
-    this.tasks = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_TASKS));
+    this.tasks = getDefaultSampleTasks();
     this.saveStore();
     showToast('Reset to original sample data!', 'info');
   }
