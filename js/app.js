@@ -2,7 +2,7 @@
  * BizFlow AI - Main Application Logic & State Store
  */
 
-const BIZFLOW_STORAGE_KEY = 'bizflow_ai_tasks_v2';
+const BIZFLOW_STORAGE_KEY = 'bizflow_ai_tasks_v3';
 
 // Helper to generate ISO date strings offset by days
 function getRelativeDateStr(daysOffset) {

@@ -28,6 +28,15 @@ const CATEGORY_COLORS = {
 };
 
 function renderKanbanBoard() {
+  if (!window.store) return;
+  
+  if (!store.tasks || store.tasks.length === 0) {
+    if (typeof store.resetToDefault === 'function') {
+      store.resetToDefault();
+      return;
+    }
+  }
+
   const filteredTasks = store.getFilteredTasks();
 
   const todoCol = document.getElementById('column-todo');
