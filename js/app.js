@@ -2,7 +2,7 @@
  * BizFlow AI - Main Application Logic & State Store
  */
 
-const BIZFLOW_STORAGE_KEY = 'bizflow_ai_tasks_v3';
+const BIZFLOW_STORAGE_KEY = 'bizflow_ai_tasks_v4';
 
 // Helper to generate ISO date strings offset by days
 function getRelativeDateStr(daysOffset) {
@@ -129,29 +129,34 @@ class BizFlowStore {
   }
 
   initStore() {
-    const rawData = localStorage.getItem(BIZFLOW_STORAGE_KEY);
-    if (rawData) {
-      try {
+    try {
+      const rawData = localStorage.getItem(BIZFLOW_STORAGE_KEY);
+      if (rawData) {
         const parsed = JSON.parse(rawData);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        const isValid = Array.isArray(parsed) && 
+          parsed.length > 0 && 
+          parsed.every(t => t && typeof t === 'object' && typeof t.title === 'string' && ['todo', 'in_progress', 'done'].includes(t.column));
+
+        if (isValid) {
           this.tasks = parsed;
-        } else {
-          this.tasks = getDefaultSampleTasks();
-          this.saveStore();
+          return;
         }
-      } catch (e) {
-        console.error('Failed to parse localStorage data, loading default seed.', e);
-        this.tasks = getDefaultSampleTasks();
-        this.saveStore();
       }
-    } else {
-      this.tasks = getDefaultSampleTasks();
-      this.saveStore();
+    } catch (e) {
+      console.error('Failed to load tasks from storage:', e);
     }
+
+    // Default fallback
+    this.tasks = getDefaultSampleTasks();
+    this.saveStore();
   }
 
   saveStore() {
-    localStorage.setItem(BIZFLOW_STORAGE_KEY, JSON.stringify(this.tasks));
+    try {
+      localStorage.setItem(BIZFLOW_STORAGE_KEY, JSON.stringify(this.tasks));
+    } catch (e) {
+      console.error('Failed to save to localStorage:', e);
+    }
     this.notifyStateChange();
   }
 
@@ -243,38 +248,38 @@ class BizFlowStore {
   }
 
   getFilteredTasks() {
-    return this.tasks.filter(t => {
-      // Search filter
+    return (this.tasks || []).filter(t => {
+      if (!t || typeof t !== 'object') return false;
+      const title = String(t.title || '');
+      const description = String(t.description || '');
+      const category = String(t.category || 'General');
+      const assignee = String(t.assignee || '');
+
       const matchesSearch = !this.filterSearch || 
-        t.title.toLowerCase().includes(this.filterSearch.toLowerCase()) ||
-        t.description.toLowerCase().includes(this.filterSearch.toLowerCase()) ||
-        t.category.toLowerCase().includes(this.filterSearch.toLowerCase()) ||
-        t.assignee.toLowerCase().includes(this.filterSearch.toLowerCase());
+        title.toLowerCase().includes(this.filterSearch.toLowerCase()) ||
+        description.toLowerCase().includes(this.filterSearch.toLowerCase()) ||
+        category.toLowerCase().includes(this.filterSearch.toLowerCase()) ||
+        assignee.toLowerCase().includes(this.filterSearch.toLowerCase());
       
-      // Priority filter
-      const matchesPriority = this.filterPriority === 'all' || t.priority === this.filterPriority;
-      
-      // Category filter
-      const matchesCategory = this.filterCategory === 'all' || t.category === this.filterCategory;
+      const matchesPriority = !this.filterPriority || this.filterPriority === 'all' || t.priority === this.filterPriority;
+      const matchesCategory = !this.filterCategory || this.filterCategory === 'all' || t.category === this.filterCategory;
 
       return matchesSearch && matchesPriority && matchesCategory;
     });
   }
 
   getMetrics() {
-    const total = this.tasks.length;
-    const todo = this.tasks.filter(t => t.column === 'todo').length;
-    const inProgress = this.tasks.filter(t => t.column === 'in_progress').length;
-    const done = this.tasks.filter(t => t.column === 'done').length;
-    const aiCount = this.tasks.filter(t => t.aiExtracted).length;
+    const validTasks = (this.tasks || []).filter(t => t && typeof t === 'object' && ['todo', 'in_progress', 'done'].includes(t.column));
+    const total = validTasks.length;
+    const todo = validTasks.filter(t => t.column === 'todo').length;
+    const inProgress = validTasks.filter(t => t.column === 'in_progress').length;
+    const done = validTasks.filter(t => t.column === 'done').length;
+    const aiCount = validTasks.filter(t => t.aiExtracted).length;
     
     const todayStr = getRelativeDateStr(0);
-    const overdue = this.tasks.filter(t => t.column !== 'done' && t.deadline && t.deadline < todayStr).length;
+    const overdue = validTasks.filter(t => t.column !== 'done' && t.deadline && t.deadline < todayStr).length;
 
-    // Calculate total hours saved by AI (approx 0.75h saved per extracted task + completed automation)
     const hoursSaved = (aiCount * 0.75 + done * 1.2).toFixed(1);
-    
-    // Productivity index calculation
     const completionRate = total > 0 ? Math.round((done / total) * 100) : 0;
     const productivityScore = Math.min(100, Math.max(20, Math.round(completionRate * 0.7 + (aiCount * 5) + 15)));
 

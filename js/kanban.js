@@ -30,7 +30,8 @@ const CATEGORY_COLORS = {
 function renderKanbanBoard() {
   if (!window.store) return;
   
-  if (!store.tasks || store.tasks.length === 0) {
+  const validTasks = (store.tasks || []).filter(t => t && typeof t === 'object' && typeof t.column === 'string');
+  if (validTasks.length === 0) {
     if (typeof store.resetToDefault === 'function') {
       store.resetToDefault();
       return;
@@ -45,9 +46,9 @@ function renderKanbanBoard() {
 
   if (!todoCol || !inProgressCol || !doneCol) return;
 
-  const todoTasks = filteredTasks.filter(t => t.column === 'todo');
-  const inProgressTasks = filteredTasks.filter(t => t.column === 'in_progress');
-  const doneTasks = filteredTasks.filter(t => t.column === 'done');
+  const todoTasks = filteredTasks.filter(t => t && t.column === 'todo');
+  const inProgressTasks = filteredTasks.filter(t => t && t.column === 'in_progress');
+  const doneTasks = filteredTasks.filter(t => t && t.column === 'done');
 
   // Update Counters
   updateCounter('count-todo', todoTasks.length);
