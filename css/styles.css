@@ -1,0 +1,195 @@
+/* BizFlow AI - Professional Modern Design System (Linear & Notion Inspired) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-main: #090d16;
+  --bg-surface: #0e1524;
+  --bg-card: rgba(15, 23, 40, 0.7);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(99, 102, 241, 0.5);
+  --accent-blue: #6366f1;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-main);
+  background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: #f1f5f9;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.015em;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Crisp Panels & Cards */
+.glass-panel {
+  background: rgba(13, 19, 33, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+}
+
+.glass-card {
+  background: rgba(15, 23, 40, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.15s ease-in-out;
+}
+
+.glass-card:hover {
+  background: rgba(20, 30, 50, 0.85);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+}
+
+.glass-input {
+  background: rgba(11, 16, 28, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #f8fafc;
+  transition: all 0.15s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* Nav Tab Buttons */
+.nav-tab-btn {
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: all 0.15s ease;
+}
+
+.nav-tab-btn:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-tab-btn.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Kanban Drag & Drop Styles */
+.kanban-column {
+  min-height: 500px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.kanban-column.drag-over {
+  background-color: rgba(99, 102, 241, 0.05) !important;
+  border: 1.5px dashed rgba(99, 102, 241, 0.5) !important;
+}
+
+.task-card {
+  cursor: grab;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-card.dragging {
+  opacity: 0.3;
+  transform: scale(0.98);
+}
+
+/* Custom Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(8, 12, 20, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Priority & Status Badges (Linear Minimalist Design) */
+.badge-priority-high {
+  background: rgba(244, 63, 94, 0.1);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.badge-priority-medium {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge-priority-low {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.badge-overdue {
+  background: rgba(225, 29, 72, 0.12);
+  color: #fb7185;
+  border: 1px solid rgba(225, 29, 72, 0.25);
+}
+
+.badge-today {
+  background: rgba(234, 179, 8, 0.12);
+  color: #fde047;
+  border: 1px solid rgba(234, 179, 8, 0.25);
+}
+
+/* Modals */
+.modal-backdrop {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.15s ease-out;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  transform: scale(0.98) translateY(4px);
+  opacity: 0;
+  transition: all 0.15s ease-out;
+}
+
+.modal-backdrop.active .modal-content {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Keyboard Shortcut Badge */
+.kbd-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.6875rem;
+  color: #94a3b8;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+
