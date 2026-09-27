@@ -162,12 +162,20 @@ code, pre, .font-mono {
 .modal-backdrop {
   opacity: 0;
   visibility: hidden;
-  transition: all 0.15s ease-out;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out, visibility 0.15s ease-out;
+}
+
+.modal-backdrop.hidden {
+  display: none !important;
+  pointer-events: none !important;
 }
 
 .modal-backdrop.active {
+  display: flex !important;
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .modal-content {

@@ -48,7 +48,10 @@ function openCreateTaskModal(defaultColumn = 'todo') {
   if (deadlineInput) deadlineInput.value = getRelativeDateStr(1);
 
   const modal = document.getElementById('task-modal');
-  if (modal) modal.classList.add('active');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.classList.add('active');
+  }
 }
 
 function editTaskModal(taskId) {
@@ -68,12 +71,18 @@ function editTaskModal(taskId) {
   setInputValue('task-hours-input', task.estimatedHours || 2);
 
   const modal = document.getElementById('task-modal');
-  if (modal) modal.classList.add('active');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.classList.add('active');
+  }
 }
 
 function closeTaskModal() {
   const modal = document.getElementById('task-modal');
-  if (modal) modal.classList.remove('active');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.classList.add('hidden');
+  }
   editingTaskId = null;
 }
 
@@ -124,6 +133,7 @@ function setInputValue(id, val) {
 function openCommandPalette() {
   const modal = document.getElementById('cmd-palette-modal');
   if (modal) {
+    modal.classList.remove('hidden');
     modal.classList.add('active');
     const input = document.getElementById('cmd-search-input');
     if (input) {
@@ -135,7 +145,10 @@ function openCommandPalette() {
 
 function closeCommandPalette() {
   const modal = document.getElementById('cmd-palette-modal');
-  if (modal) modal.classList.remove('active');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.classList.add('hidden');
+  }
 }
 
 function initKeyboardShortcuts() {
