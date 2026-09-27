@@ -130,14 +130,20 @@ class BizFlowStore {
     const rawData = localStorage.getItem(BIZFLOW_STORAGE_KEY);
     if (rawData) {
       try {
-        this.tasks = JSON.parse(rawData);
+        const parsed = JSON.parse(rawData);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this.tasks = parsed;
+        } else {
+          this.tasks = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_TASKS));
+          this.saveStore();
+        }
       } catch (e) {
         console.error('Failed to parse localStorage data, loading default seed.', e);
-        this.tasks = [...DEFAULT_SAMPLE_TASKS];
+        this.tasks = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_TASKS));
         this.saveStore();
       }
     } else {
-      this.tasks = [...DEFAULT_SAMPLE_TASKS];
+      this.tasks = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_TASKS));
       this.saveStore();
     }
   }
