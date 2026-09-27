@@ -261,6 +261,7 @@ function importSelectedAITasks() {
 function openAIModal() {
   const modal = document.getElementById('ai-extractor-modal');
   if (modal) {
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
     modal.classList.add('active');
   }
@@ -269,6 +270,7 @@ function openAIModal() {
 function closeAIModal() {
   const modal = document.getElementById('ai-extractor-modal');
   if (modal) {
+    modal.style.display = 'none';
     modal.classList.remove('active');
     modal.classList.add('hidden');
   }

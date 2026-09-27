@@ -49,6 +49,7 @@ function openCreateTaskModal(defaultColumn = 'todo') {
 
   const modal = document.getElementById('task-modal');
   if (modal) {
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
     modal.classList.add('active');
   }
@@ -72,6 +73,7 @@ function editTaskModal(taskId) {
 
   const modal = document.getElementById('task-modal');
   if (modal) {
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
     modal.classList.add('active');
   }
@@ -80,6 +82,7 @@ function editTaskModal(taskId) {
 function closeTaskModal() {
   const modal = document.getElementById('task-modal');
   if (modal) {
+    modal.style.display = 'none';
     modal.classList.remove('active');
     modal.classList.add('hidden');
   }
@@ -133,6 +136,7 @@ function setInputValue(id, val) {
 function openCommandPalette() {
   const modal = document.getElementById('cmd-palette-modal');
   if (modal) {
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
     modal.classList.add('active');
     const input = document.getElementById('cmd-search-input');
@@ -146,6 +150,7 @@ function openCommandPalette() {
 function closeCommandPalette() {
   const modal = document.getElementById('cmd-palette-modal');
   if (modal) {
+    modal.style.display = 'none';
     modal.classList.remove('active');
     modal.classList.add('hidden');
   }
