@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 });
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health', '/api', '/'], (req, res) => {
   res.json({
     status: 'online',
     app: 'BizFlow AI Backend API',
@@ -26,7 +26,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // App Info endpoint
-app.get('/api/info', (req, res) => {
+app.get(['/api/info', '/info'], (req, res) => {
   res.json({
     name: 'BizFlow AI',
     version: '1.0.0',
@@ -35,7 +35,7 @@ app.get('/api/info', (req, res) => {
 });
 
 // WhatsApp Extraction Backend Endpoint
-app.post('/api/extract', (req, res) => {
+app.post(['/api/extract', '/extract'], (req, res) => {
   const { text } = req.body || {};
   if (!text || typeof text !== 'string' || text.trim().length < 5) {
     return res.status(400).json({ error: 'Valid text content is required' });
@@ -81,6 +81,16 @@ app.post('/api/extract', (req, res) => {
     success: true,
     count: tasks.length,
     tasks
+  });
+});
+
+// Catch-all API handler
+app.all('*', (req, res) => {
+  res.json({
+    status: 'online',
+    app: 'BizFlow AI Backend API',
+    endpoint: req.url,
+    availableEndpoints: ['/api/health', '/api/info', '/api/extract']
   });
 });
 

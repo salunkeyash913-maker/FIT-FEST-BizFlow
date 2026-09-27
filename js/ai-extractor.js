@@ -170,11 +170,10 @@ function getRelativeDateOffset(targetDayName) {
 window.aiExtractor = new AIExtractor();
 
 // Handler to trigger AI extraction in UI
-function handleExtractTasks() {
+async function handleExtractTasks() {
   const rawText = document.getElementById('whatsapp-input').value;
   const statusContainer = document.getElementById('ai-processing-status');
   const resultsContainer = document.getElementById('ai-results-container');
-  const resultsList = document.getElementById('ai-results-list');
 
   if (!rawText.trim()) {
     showToast('Please paste a WhatsApp message or select a preset template first', 'warning');
@@ -185,15 +184,33 @@ function handleExtractTasks() {
   statusContainer.classList.remove('hidden');
   resultsContainer.classList.add('hidden');
 
-  // Simulate AI parsing delay for realistic effect
-  setTimeout(() => {
-    const tasks = aiExtractor.processRawText(rawText);
+  try {
+    const response = await fetch('/api/extract', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: rawText })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.success && Array.isArray(data.tasks) && data.tasks.length > 0) {
+        aiExtractor.extractedResults = data.tasks.map(t => ({ ...t, selected: true }));
+        showToast(`Extracted ${data.count} tasks via Backend API!`, 'success');
+      } else {
+        aiExtractor.processRawText(rawText);
+      }
+    } else {
+      aiExtractor.processRawText(rawText);
+    }
+  } catch (err) {
+    console.warn('Backend API unavailable, using client-side AI extractor fallback:', err);
+    aiExtractor.processRawText(rawText);
+  } finally {
     statusContainer.classList.add('hidden');
     resultsContainer.classList.remove('hidden');
-
-    renderExtractedResults(tasks);
+    renderExtractedResults(aiExtractor.extractedResults);
     if (window.lucide) lucide.createIcons();
-  }, 900);
+  }
 }
 
 function renderExtractedResults(tasks) {
